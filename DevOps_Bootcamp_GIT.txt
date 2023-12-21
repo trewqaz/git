@@ -1,0 +1,95 @@
+#Version control
+You can revert commits
+
+#Basic concepts if GIT
+Remote GIT Repository:: github, gitlab,bitbucket
+private vs public repositories
+
+Branchces:
+master branch vs master + dev branch
+
+*only master branch for continous integratioin/delivery
+*pipeline is triggered whenever feature/bugfix code is merged in master
+	 (pipeline = test, build, delpoy)
+	i.e., code pushed into test environment
+		then builded, then deployed (at leaset in stagin)
+*deploying every single feature/bugfix 
+*features/bugfixes are collected in dev branch
+
+# $git pull vs $git pull rebase
+ 
+$git pull -r
+$git add .
+$git rebase --continue
+
+
+# .gitignore File
+*If we want any folder(s) to be ignored (i.e., make folders untracked) by git, 
+they can added to .gitignore file.
+*If a folder is already being tracked by git, but added to .gitignore, then it will still
+be tracked by git. To untrack folder the follow these steps
+$git rm -r --cached featureXfolder
+$git status
+$git add .
+$git commit -m "added to .ignore file" .
+
+#Stashing
+
+When we want to switch to another branch from on current feature(or any) branch with uncommited changes, checkout doesn't happen.
+In such we can stash changes and then we can checkout.
+
+$git stash
+
+When we switch back to previous branch, we cannot see our saved immediately. To see those, we can use the following command
+$git stash list
+$git stash show
+$git stash pop
+
+$git stash pop stashID
+
+#History : Restoring an old commit/snapshot by creating branch out of it,
+	$git log
+	$git checkout SHA-1
+	$git checkout -b newbranchtorestorecheckedoutcommit
+
+#undoing commits
+
+If we want revert a commit, which is not pushed to remote repo,
+$git log	: to find where HEAD is pointing
+$git reset --hard HEAD~1	: reverts to one previous commit and discards changes in file
+
+$git reset --soft HEAD~1 or $git reset HEAD~1 : reverts to one previous commit and but keeps changes in file
+
+$git reset --mixed
+
+
+#changing commit
+Make changes in file
+$git commit --amend -m "message"
+
+#undoing remote commit (unsafe way)
+$git reset --hard HEAD~1
+$git push --force 	: make sure HEAD~1 is correct commit in remote repo, because it will get deleted from remote repo
+
+
+
+#undoing remote commit (safe way)
+
+$git revert SHA1_HASH_OF_REMOTE_COMMIT : recent commit won't be deleted, but new commit will be created using previous good commit/snapshot
+
+#difference/comparision
+
+$git diff (show difference between working changes and last commit)
+$git diff --cached (show difference between staged changes and last commit)
+$git cherry-pick (apply the changes introduced by some existing commits)
+
+
+#backing up
+
+$git bundle
+
+$git-backup
+
+
+Creating git server on premise
+$git init --bare git_server.git
